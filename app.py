@@ -10,6 +10,23 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+def ensure_nltk_tokenizer():
+    try:
+        nltk.data.find("tokenizers/punkt")
+    except LookupError:
+        nltk.download("punkt")
+
+    # Newer NLTK versions also require punkt_tab
+    try:
+        nltk.data.find("tokenizers/punkt_tab")
+    except LookupError:
+        try:
+            nltk.download("punkt_tab")
+        except:
+            pass  # some NLTK versions don't have punkt_tab
+
+ensure_nltk_tokenizer()
 # -----------------------
 # USER CONFIG - EDIT THESE
 # -----------------------
@@ -403,3 +420,4 @@ if st.button("Run pipeline"):
 
 st.markdown("---")
 st.caption("Notes: Research mode = independent pipelines & prompts. Set GEMINI_API_KEY and PDF_PATH at top of this file.")
+
